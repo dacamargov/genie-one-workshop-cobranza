@@ -1,13 +1,12 @@
-# Workshop · Genie One para Ejecutivos — Inteligencia de Cobranza
+# Workshop Genie One
 
-Workshop hands-on de **2 horas** para que ejecutivos y líderes de negocio usen
-[Genie One](https://docs.databricks.com/aws/en/genie-one/) para responder preguntas, automatizar reportes y tomar
-acciones sobre la **cartera de cobranza**, en lenguaje natural y **sin escribir SQL**.
+Workshop hands-on para usar [Genie One](https://docs.databricks.com/aws/en/genie-one/) para responder preguntas,
+automatizar reportes y tomar acciones sobre la **cartera de cobranza**, en lenguaje natural y **sin escribir SQL**.
 
 El recorrido es el siguiente:
 
 1. El facilitador crea una sola vez un **Genie Agent** sobre las tablas de cobranza (sección 3).
-2. A partir de ahí, cada ejecutivo va **bajando por esta página** y copiando/pegando los prompts tal cual: primero
+2. A partir de ahí, cada participante va **bajando por esta página** y copiando/pegando los prompts tal cual: primero
    preguntas de negocio sobre la cartera, gestiones y promesas; luego memoria, *skills*, documentos, presentaciones,
    tareas programadas y conectores.
 
@@ -15,22 +14,6 @@ El recorrido es el siguiente:
 > ya tienes en producción). No se generan datos: solo apuntas el Genie Agent a tu catálogo y esquema. Las cifras de
 > "respuesta esperada" que aparecen abajo son de un entorno de ejemplo y sirven solo como referencia de **cómo debe
 > verse** una buena respuesta.
-
----
-
-## Agenda (2 horas)
-
-| Sección | Tiempo | Tema |
-|---|---|---|
-| 3 | *pre-trabajo* | Preparación: crear el Genie Agent (facilitador) |
-| 4 | 0:00 – 0:15 | Primeros pasos en el chat |
-| 5 | 0:15 – 0:40 | Preguntas de negocio sobre la cartera |
-| 6 | 0:40 – 1:00 | Gestiones, contactabilidad y promesas de pago |
-| 7 | 1:00 – 1:10 | Memoria y personalización |
-| 8 | 1:10 – 1:30 | Skills: automatizar análisis repetibles |
-| 9 | 1:30 – 1:45 | Documentos y presentaciones (artifacts) |
-| 10 | 1:45 – 1:55 | Tareas programadas |
-| 11 | 1:55 – 2:00 | Conectores (MCP), Genie Agent reutilizable y cierre |
 
 ---
 
@@ -149,7 +132,7 @@ GROUP BY ULTIMA_ETAPA_DESCRIPCION ORDER BY procesos DESC;
 
 ---
 
-## 4. Primeros pasos en el chat (15 min)
+## 4. Primeros pasos en el chat
 
 📄 [Chat en Genie One](https://docs.databricks.com/aws/en/genie-one/chat).
 
@@ -186,7 +169,7 @@ Ahora ordénalo de mayor a menor y agrega el número de deudores por campaña.
 
 ---
 
-## 5. Preguntas de negocio sobre la cartera (25 min)
+## 5. Preguntas de negocio sobre la cartera
 
 Base: `tbl_vreporteedadcartera`. Copia y pega uno por uno.
 
@@ -237,7 +220,7 @@ Compara el saldo en mora de la regional Valle contra Bogotá y dime la diferenci
 
 ---
 
-## 6. Gestiones, contactabilidad y promesas de pago (20 min)
+## 6. Gestiones, contactabilidad y promesas de pago
 
 Tablas: `tbl_vreportegestiones`, `tbl_vreportepromesas`.
 
@@ -284,7 +267,7 @@ También puedes mirar el cobro jurídico:
 
 ---
 
-## 7. Memoria y personalización (10 min)
+## 7. Memoria y personalización
 
 📄 [Personalizar Genie One](https://docs.databricks.com/aws/en/genie-one/personalization).
 
@@ -322,7 +305,7 @@ Retoma una conversación anterior:
 
 ---
 
-## 8. Skills: automatizar análisis repetibles (20 min)
+## 8. Skills: automatizar análisis repetibles
 
 📄 [Skills en Genie One](https://docs.databricks.com/aws/en/genie-one/skills).
 
@@ -367,7 +350,7 @@ habilita un admin; ver la [doc de Skills](https://docs.databricks.com/aws/en/gen
 
 ---
 
-## 9. Documentos y presentaciones (15 min)
+## 9. Documentos y presentaciones
 
 📄 [Documentos](https://docs.databricks.com/aws/en/genie-one/documents) · [Artifacts](https://docs.databricks.com/aws/en/genie-one/artifacts).
 
@@ -403,7 +386,7 @@ Pregúntale a una lámina (**Ask Genie**): selecciona un gráfico y pega:
 
 ---
 
-## 10. Tareas programadas (10 min)
+## 10. Tareas programadas
 
 📄 [Tareas programadas](https://docs.databricks.com/aws/en/genie-one/scheduled-tasks).
 
@@ -430,7 +413,7 @@ Schedule, Timezone).
 
 ---
 
-## 11. Conectores (MCP), Genie Agent reutilizable y cierre (5 min)
+## 11. Conectores (MCP), Genie Agent reutilizable y cierre
 
 📄 [Conectar apps externas con MCP](https://docs.databricks.com/aws/en/genie-one/external-sources) ·
 [Crear un Genie Agent desde un chat](https://docs.databricks.com/aws/en/genie-one/create-agent-from-chat).
@@ -452,7 +435,7 @@ Redacta un correo para el equipo regional del Valle con las 3 alertas de cartera
 Guarda este análisis de cobranza como un agente para poder reutilizarlo. Que incluya las definiciones de campaña, la tasa de cobertura y el cruce de promesas con cartera.
 ```
 
-**Cierre — lo que cada ejecutivo se lleva:** preguntar y verificar con citaciones; analizar cartera, gestiones,
+**Cierre — lo que cada participante se lleva:** preguntar y verificar con citaciones; analizar cartera, gestiones,
 promesas y jurídico sin SQL; *skills* para estandarizar reportes; documentos y presentaciones para comité; tareas
 automáticas por correo; y conectores para actuar en Slack/correo.
 
