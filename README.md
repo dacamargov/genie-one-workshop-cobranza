@@ -72,21 +72,35 @@ En `dacamargovws_catalog.bancoomeva`. Comparten la **cédula del cliente** como 
 
 ---
 
-## Reproducir con datos reales
+## Crear todo desde cero (un comando)
 
-El esquema es el mismo que usan las áreas en producción. Para reproducir el workshop con datos propios,
-basta con cargar tablas con **los mismos nombres y columnas** (ver [`datos/schema.json`](datos/schema.json))
-en un catálogo/esquema propio y repetir los mismos pasos. Los scripts de [`datos/`](datos/) regeneran todo:
+Todo el workshop —esquema, tablas, metadatos, validación y **Genie Agent**— se crea desde cero con los scripts de
+[`datos/`](datos/). El camino rápido:
 
 ```bash
 cd datos
-python3 generate.py 500      # genera CSV sintéticos (ajusta el nº de clientes)
-python3 load.py              # sube a un Volume y crea las 17 tablas
-python3 prep_metadata.py     # agrega descripciones de negocio a las columnas clave
-python3 validate_prompts.py  # valida que cada prompt del workshop devuelva datos
+./setup.sh      # esquema + 17 tablas + metadatos + validación + Genie Agent "Cobranza Bancoomeva"
 ```
 
-> Resultado de la última validación: **19/19 prompts** devuelven datos coherentes. Ver [`datos/validation_results.md`](datos/validation_results.md).
+O paso a paso:
+
+```bash
+cd datos
+python3 generate.py 500        # genera CSV sintéticos (ajusta el nº de clientes)
+python3 load.py                # sube a un Volume y crea las 17 tablas
+python3 prep_metadata.py       # agrega descripciones de negocio a las columnas clave (ontología)
+python3 validate_prompts.py    # valida que cada prompt del workshop devuelva datos
+python3 create_genie_agent.py  # crea el Genie Agent sobre las tablas, vía API
+```
+
+Detalle completo en [`00-preparacion-facilitador.md`](00-preparacion-facilitador.md).
+
+> **Reproducir con datos reales:** el esquema es el mismo que usan las áreas en producción. Basta cargar tablas con
+> **los mismos nombres y columnas** (ver [`datos/schema.json`](datos/schema.json)) en un catálogo/esquema propio y
+> repetir los mismos pasos.
+
+> Resultado de la última validación: **19/19 prompts** devuelven datos coherentes
+> (ver [`datos/validation_results.md`](datos/validation_results.md)) y el Genie Agent fue probado de punta a punta.
 
 ---
 

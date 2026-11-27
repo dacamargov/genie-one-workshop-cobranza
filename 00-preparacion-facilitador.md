@@ -1,18 +1,41 @@
-# Bloque 0 — Preparación del facilitador (pre-trabajo)
+# Bloque 0 — Preparación del facilitador: crear todo desde cero (pre-trabajo)
 
 > Esto se hace **antes** del workshop. No cuenta dentro de las 2 horas.
 > Tiempo estimado: 20–30 minutos.
 
-El objetivo es que, cuando los ejecutivos entren a Genie One, puedan hacer preguntas y obtener
-respuestas correctas de inmediato. Para eso dejamos listas tres cosas: **los datos**, **el contexto de negocio**
-(ontología) y, de forma recomendada, un **Genie Agent** sobre las tablas.
+Este bloque crea **todo desde cero**: el esquema, las 17 tablas con datos sintéticos, el contexto de negocio
+(ontología) y el **Genie Agent** sobre las tablas. Todo está automatizado en los scripts de [`datos/`](datos/).
+
+## 0.0 Camino rápido: un solo comando (recomendado)
+
+Desde la raíz del repo:
+
+```bash
+cd datos
+./setup.sh      # genera datos, crea esquema+tablas, agrega metadatos, valida y crea el Genie Agent
+```
+
+El script es idempotente y al final imprime la **URL del Genie Agent**. Si prefieres ir paso a paso, usa las
+secciones siguientes. Antes de empezar, ajusta `PROFILE / WAREHOUSE / CATALOG / SCHEMA_UC` en
+[`datos/load.py`](datos/load.py) si usas otro entorno (por defecto apuntan a `fevm-dacamargovws` y
+`dacamargovws_catalog.bancoomeva`).
 
 ---
 
-## 0.1 Verificar los datos (5 min)
+## 0.1 Crear el esquema y las tablas (8 min)
 
-Las 17 tablas ya están creadas en `dacamargovws_catalog.bancoomeva`. Verifícalo en el workspace
-[`fevm-dacamargovws`](https://fevm-dacamargovws.cloud.databricks.com/?o=7474652595969633):
+```bash
+cd datos
+
+# (si el esquema no existe todavía)
+databricks api post /api/2.0/sql/statements -p fevm-dacamargovws --json \
+  '{"warehouse_id":"61200af9c31dec2e","statement":"CREATE SCHEMA IF NOT EXISTS dacamargovws_catalog.bancoomeva"}'
+
+python3 generate.py 500      # genera los CSV sintéticos (ajusta el nº de clientes)
+python3 load.py              # sube a un Volume y crea las 17 tablas con los tipos del esquema
+```
+
+Verifica el resultado:
 
 ```sql
 SELECT table_name
@@ -22,13 +45,8 @@ ORDER BY table_name;
 -- Debe devolver 17 tablas.
 ```
 
-Si necesitas recrearlas (o reproducir con datos reales en otro esquema), usa los scripts de [`datos/`](datos/):
-
-```bash
-cd datos
-python3 generate.py 500      # CSV sintéticos
-python3 load.py              # crea las 17 tablas (ajusta PROFILE/WAREHOUSE/CATALOG/SCHEMA en el script)
-```
+> Para reproducir con **datos reales**, carga tablas con los mismos nombres y columnas
+> (ver [`datos/schema.json`](datos/schema.json)) en tu propio catálogo/esquema y continúa igual.
 
 ## 0.2 Cargar el contexto de negocio / ontología (5 min)
 
@@ -44,39 +62,49 @@ python3 prep_metadata.py     # agrega COMMENT a 46 columnas clave
 > **Por qué importa:** con buenos comentarios, cuando un ejecutivo pregunta *"¿cuánto saldo en mora hay en jurídico?"*,
 > Genie entiende que `CAMPANA = 'JURIDICO'` y que `SALDO` está en COP. Sin contexto, las respuestas son menos precisas.
 
-## 0.3 (Recomendado) Crear un Genie Agent sobre las tablas (10 min)
+## 0.3 Crear el Genie Agent desde cero (10 min)
 
 Genie One primero busca un **Genie Agent** relevante para la pregunta y, si lo encuentra, lo usa para responder
 ([ver "How chat works"](https://docs.databricks.com/aws/en/genie-one/chat)). Un Agent curado mejora mucho la precisión.
 
-1. En el workspace, ve a **Genie** y crea un nuevo **Genie Space / Agent** llamado **`Cobranza Bancoomeva`**.
-2. Agrega como fuentes las 4 tablas de reportes (son las que usa el workshop):
-   - `dacamargovws_catalog.bancoomeva.tbl_vreporteedadcartera`
-   - `dacamargovws_catalog.bancoomeva.tbl_vreportegestiones`
-   - `dacamargovws_catalog.bancoomeva.tbl_vreportepromesas`
-   - `dacamargovws_catalog.bancoomeva.tbl_vreporteprocesosjuridicos`
-   - *(Opcional)* las tablas `cliente`, `obligaciones_cobis`, `obligaciones_tarcred` para la "vista 360".
-3. En **General instructions** del Agent, pega el contenido de [`genie-space-instructions.md`](genie-space-instructions.md).
-4. Agrega estas **Example SQL queries** (ayudan a Genie a aprender los cruces):
+### Opción A — por script (recomendado)
 
-```sql
--- Saldo en mora por campaña
-SELECT CAMPANA, COUNT(*) AS deudores, SUM(SALDO) AS saldo
-FROM tbl_vreporteedadcartera GROUP BY CAMPANA ORDER BY saldo DESC;
+El script [`datos/create_genie_agent.py`](datos/create_genie_agent.py) crea el Agent **`Cobranza Bancoomeva`** de cero
+vía la API de Genie (`POST /api/2.0/genie/spaces`): agrega las 6 tablas, las instrucciones de negocio y 5 consultas
+de ejemplo ya validadas.
 
--- Tasa de cumplimiento de promesas por estado
-SELECT ESTADO_PROMESA, COUNT(*) AS promesas, SUM(VALOR_PROMESA) AS valor
-FROM tbl_vreportepromesas GROUP BY ESTADO_PROMESA;
-
--- Gestiones cruzadas con cartera (ojo con el tipo de la cédula)
-SELECT c.GRUPOUSUARIO, COUNT(*) AS gestiones
-FROM tbl_vreportegestiones g
-JOIN tbl_vreporteedadcartera c
-  ON CAST(g.ID_DEUDOR AS BIGINT) = CAST(c.IDENTIFICACION AS BIGINT)
-GROUP BY c.GRUPOUSUARIO;
+```bash
+cd datos
+python3 create_genie_agent.py
+# Imprime el space_id y la URL del Agent recién creado.
 ```
 
-5. **Comparte** el Agent con los participantes (CAN VIEW / CAN RUN) para que lo vean en Genie One.
+> Requisitos: `CAN USE` en un SQL Warehouse **Pro o Serverless** y **Databricks Assistant** habilitado.
+> Para registrarlo en otra carpeta, exporta `GENIE_PARENT_PATH=/Users/tu-correo` antes de ejecutar.
+
+### Opción B — por interfaz (UI)
+
+1. En el workspace, ve a **Genie** y crea un nuevo **Genie Space / Agent** llamado **`Cobranza Bancoomeva`**.
+2. Agrega como fuentes las 4 tablas de reportes (+ opcionalmente `cliente` y `obligaciones_cobis` para la "vista 360"):
+   `tbl_vreporteedadcartera`, `tbl_vreportegestiones`, `tbl_vreportepromesas`, `tbl_vreporteprocesosjuridicos`.
+3. En **General instructions**, pega el contenido de [`genie-space-instructions.md`](genie-space-instructions.md).
+4. Agrega **Example SQL queries** (las mismas del script). Por ejemplo:
+
+```sql
+-- Tasa de cumplimiento de promesas por grupo (ojo con el tipo de la cédula)
+SELECT c.GRUPOUSUARIO, COUNT(*) AS promesas,
+       ROUND(100.0*SUM(CASE WHEN p.ESTADO_PROMESA='CUMPLIDA' THEN 1 ELSE 0 END)/COUNT(*),1) AS pct_cumplida
+FROM tbl_vreportepromesas p
+JOIN tbl_vreporteedadcartera c ON CAST(p.CEDULA AS BIGINT) = CAST(c.IDENTIFICACION AS BIGINT)
+GROUP BY c.GRUPOUSUARIO ORDER BY pct_cumplida DESC;
+```
+
+### Compartir y validar
+
+- **Comparte** el Agent con los participantes: ábrelo en Genie y pulsa **Share** (CAN VIEW / CAN RUN).
+- Este Agent ya fue probado de punta a punta. Respuestas verificadas:
+  - *"¿Cuál es el saldo total en mora y cuántos deudores hay?"* → **17.123 millones de COP, 392 deudores**.
+  - *"¿Qué grupo de cobranza tiene mejor cumplimiento de promesas?"* → **ABOGADOS EXTERNOS, 46,8%** (usando el cruce con `CAST`).
 
 > **Nota técnica importante — la cédula:** en las tablas de reportes la llave del cliente tiene **tipos distintos**:
 > `IDENTIFICACION`, `CEDULA` y `CLIENTE_IDENTIFICACION` son texto o número según la tabla. Para cruzarlas hay que
@@ -85,9 +113,11 @@ GROUP BY c.GRUPOUSUARIO;
 
 ## 0.4 Checklist final antes de empezar
 
+- [ ] El esquema `dacamargovws_catalog.bancoomeva` existe.
 - [ ] Las 17 tablas existen y tienen datos (`SELECT COUNT(*)` > 0).
 - [ ] `prep_metadata.py` ejecutado (columnas con descripción).
-- [ ] Genie Agent `Cobranza Bancoomeva` creado y compartido (recomendado).
+- [ ] Genie Agent `Cobranza Bancoomeva` creado (`create_genie_agent.py`) y **compartido** con los participantes.
+- [ ] `validate_prompts.py` en verde (19/19 prompts devuelven datos).
 - [ ] Cada participante puede abrir Genie One y tiene `CAN USE` sobre un SQL Warehouse.
 - [ ] Proyectar pantalla para la demo en vivo.
 
