@@ -447,7 +447,7 @@ semana, (3) comparte tu mejor skill con el equipo.
 ## 12. Estructura del repo
 
 ```
-genie-one-workshop-cobranza/
+genie-one-workshop-hands-on/
 ├── README.md                              # este workshop completo, de arriba a abajo
 └── skills/
     ├── briefing-cartera-semanal/SKILL.md  # briefing ejecutivo semanal de cartera
