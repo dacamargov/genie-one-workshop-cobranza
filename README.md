@@ -59,6 +59,9 @@ Tablas maestras y de productos (opcionales, para la "vista 360"): `cliente`, `di
 Genie One primero busca un **Genie Agent** relevante y, si lo encuentra, lo usa para responder
 ([cómo funciona el chat](https://docs.databricks.com/aws/en/genie-one/chat)). Un Agent curado mejora mucho la precisión.
 
+> 👤 **Esta sección la hace solo el facilitador, una sola vez.** Los participantes **no** pasan por aquí: empiezan en
+> la sección 4 y en todo el workshop solo escriben en lenguaje natural, nunca código.
+
 **Pasos (una sola vez):**
 
 1. En la barra lateral abre **Genie** y crea un nuevo agente (**New**).
@@ -102,33 +105,11 @@ Estilo: responde en español, tono ejecutivo y conciso. Cuando sea útil muestra
 (barras para rankings, torta para distribuciones) e incluye el total y el detalle.
 ```
 
-5. Agrega estas **Example SQL queries** (ayudan a Genie a aprender los cruces). Reemplaza `<catalogo>.<esquema>`:
+5. **Guarda** y **comparte** el agente con los participantes: ábrelo y pulsa **Share** (CAN VIEW / CAN RUN).
 
-```sql
--- Saldo en mora por campaña
-SELECT CAMPANA, COUNT(*) AS deudores, SUM(SALDO) AS saldo
-FROM <catalogo>.<esquema>.tbl_vreporteedadcartera
-GROUP BY CAMPANA ORDER BY saldo DESC;
-```
-
-```sql
--- Tasa de cumplimiento de promesas por grupo de cobranza (cruce por cédula)
-SELECT c.GRUPOUSUARIO, COUNT(*) AS promesas,
-       ROUND(100.0*SUM(CASE WHEN p.ESTADO_PROMESA='CUMPLIDA' THEN 1 ELSE 0 END)/COUNT(*),1) AS pct_cumplida
-FROM <catalogo>.<esquema>.tbl_vreportepromesas p
-JOIN <catalogo>.<esquema>.tbl_vreporteedadcartera c
-  ON CAST(p.CEDULA AS BIGINT) = CAST(c.IDENTIFICACION AS BIGINT)
-GROUP BY c.GRUPOUSUARIO ORDER BY pct_cumplida DESC;
-```
-
-```sql
--- Procesos jurídicos por etapa procesal
-SELECT ULTIMA_ETAPA_DESCRIPCION, COUNT(*) AS procesos, SUM(CAPITAL) AS capital
-FROM <catalogo>.<esquema>.tbl_vreporteprocesosjuridicos
-GROUP BY ULTIMA_ETAPA_DESCRIPCION ORDER BY procesos DESC;
-```
-
-6. **Guarda** y **comparte** el agente con los participantes: ábrelo y pulsa **Share** (CAN VIEW / CAN RUN).
+> 🧑‍💻 Con las instrucciones de negocio del paso 4 es suficiente para el workshop. Opcionalmente, si el facilitador
+> quiere afinar aún más la precisión, el panel del agente permite agregar **consultas de ejemplo** desde la misma
+> interfaz de Genie. No es necesario para el ejercicio y los participantes nunca ven ni escriben código.
 
 > ✅ Valida el agente preguntándole *"¿Cuál es el saldo total en mora y cuántos deudores hay?"*: debe responder con el
 > total y usar `tbl_vreporteedadcartera`. Prueba también *"¿Qué grupo de cobranza cumple mejor las promesas?"* para
