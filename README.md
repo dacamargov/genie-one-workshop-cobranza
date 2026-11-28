@@ -61,9 +61,12 @@ Genie One primero busca un **Genie Agent** relevante y, si lo encuentra, lo usa 
 
 **Pasos (una sola vez):**
 
-1. En la barra lateral abre **Genie** y crea un nuevo agente (**New**). Nómbralo **`Cobranza`**.
-2. Como fuentes, agrega tus 4 tablas de reportes (y opcionalmente `cliente` y `obligaciones_cobis` para la vista 360),
-   usando tu catálogo y esquema reales:
+1. En la barra lateral abre **Genie** y crea un nuevo agente (**New**).
+2. Aparece la pantalla **"What should your Genie Agent do?"** con dos opciones: describirlo en lenguaje natural o
+   **seleccionar las tablas manualmente**. Para este ejercicio elige **seleccionar las tablas manualmente**
+   (es más directo y predecible que describirlo en lenguaje natural). Nombra el agente **`Cobranza`**.
+3. Como fuentes, selecciona tus 4 tablas de reportes (y opcionalmente `cliente` y `obligaciones_cobis` para la vista
+   360), usando tu catálogo y esquema reales:
 
 ```text
 <catalogo>.<esquema>.tbl_vreporteedadcartera
@@ -74,7 +77,7 @@ Genie One primero busca un **Genie Agent** relevante y, si lo encuentra, lo usa 
 <catalogo>.<esquema>.obligaciones_cobis
 ```
 
-3. En **General instructions** del agente, pega este texto:
+4. En **General instructions** del agente, pega este texto:
 
 ```text
 Eres un asistente de análisis para el área de cobranza de un banco. Respondes preguntas sobre la cartera en mora,
@@ -98,7 +101,7 @@ Estilo: responde en español, tono ejecutivo y conciso. Cuando sea útil muestra
 (barras para rankings, torta para distribuciones) e incluye el total y el detalle.
 ```
 
-4. Agrega estas **Example SQL queries** (ayudan a Genie a aprender los cruces). Reemplaza `<catalogo>.<esquema>`:
+5. Agrega estas **Example SQL queries** (ayudan a Genie a aprender los cruces). Reemplaza `<catalogo>.<esquema>`:
 
 ```sql
 -- Saldo en mora por campaña
@@ -124,7 +127,7 @@ FROM <catalogo>.<esquema>.tbl_vreporteprocesosjuridicos
 GROUP BY ULTIMA_ETAPA_DESCRIPCION ORDER BY procesos DESC;
 ```
 
-5. **Guarda** y **comparte** el agente con los participantes: ábrelo y pulsa **Share** (CAN VIEW / CAN RUN).
+6. **Guarda** y **comparte** el agente con los participantes: ábrelo y pulsa **Share** (CAN VIEW / CAN RUN).
 
 > ✅ Valida el agente preguntándole *"¿Cuál es el saldo total en mora y cuántos deudores hay?"*: debe responder con el
 > total y usar `tbl_vreporteedadcartera`. Prueba también *"¿Qué grupo de cobranza cumple mejor las promesas?"* para
