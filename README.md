@@ -123,6 +123,11 @@ Estilo: responde en español, tono ejecutivo y conciso. Cuando sea útil muestra
 
 Abre Genie One y haz clic en **New chat** (o usa el modo **Ask**). El compute está en **Auto**: no hay que configurar nada.
 
+> ⚠️ **Importante — dónde escribir.** Todo el workshop (secciones 4 a 11) se hace en el chat de **Genie One**
+> (**New chat / Ask**), **no** dentro del room del Genie Agent "Cobranza". Genie One usa el Agent **por detrás** para
+> responder tus preguntas de datos, pero las funciones de skills, memoria, documentos, presentaciones y tareas
+> programadas viven en Genie One. Si escribes dentro del room del Agent, esas funciones no estarán disponibles.
+
 Copia este primer prompt:
 
 ```text
@@ -263,23 +268,17 @@ Retoma una conversación anterior:
 Una **Skill** le enseña a Genie una tarea repetible con un formato fijo. La invocas con `/` y puedes compartirla con tu
 equipo. En este repo hay 3 skills listas en [`skills/`](skills/).
 
-**Crear una skill dictándola** — copia este prompt:
+> ⚠️ Recuerda: las skills son de **Genie One** (su chat propio), no del room del Agent. Haz todo esto desde Genie One
+> (**New chat / Ask**). Si pides crear una skill dentro del room del Agent "Cobranza", verás un mensaje de que *"no se
+> pueden guardar skills en esta plataforma"*: es porque el room del Agent no es Genie One.
 
-```text
-Crea una skill llamada "briefing-cartera-semanal" que genere un briefing ejecutivo del estado de la cartera.
-Debe incluir: (1) saldo total en mora y nº de deudores, (2) desglose por campaña, (3) top 3 regiones por saldo,
-(4) tasa de cobertura (provisión/capital), (5) los 5 deudores de mayor saldo y (6) 3 alertas accionables.
-Usa la tabla tbl_vreporteedadcartera, cifras en millones de COP y preséntalo con títulos y viñetas.
-```
-
-Genie la guarda en `/Workspace/Users/{tu-correo}/.assistant/skills/`. **Invócala** escribiendo `/`:
+**Opción 1 (recomendada) — subir una skill ya preparada.** En la navegación izquierda de Genie One, **Customizations →
+Skills → + New → Upload Skills**, y sube una carpeta de [`skills/`](skills/) (por ejemplo `briefing-cartera-semanal`).
+Es el camino más confiable porque no depende de que la creación por chat esté habilitada. Luego invócala escribiendo `/`:
 
 ```text
 /briefing-cartera-semanal
 ```
-
-**Subir una skill ya preparada** (alternativa): en la navegación izquierda, **Customizations → Skills → + New → Upload
-Skills**, y sube una carpeta de [`skills/`](skills/) (por ejemplo `analisis-promesas-pago`). Luego pruébala:
 
 ```text
 /analisis-promesas-pago
@@ -288,6 +287,22 @@ Skills**, y sube una carpeta de [`skills/`](skills/) (por ejemplo `analisis-prom
 ```text
 /seguimiento-juridico
 ```
+
+**Opción 2 — crear una skill dictándola** (si tu workspace tiene la creación de skills por chat habilitada). En un
+**New chat** de Genie One copia este prompt:
+
+```text
+Crea una skill llamada "briefing-cartera-semanal" que genere un briefing ejecutivo del estado de la cartera.
+Debe incluir: (1) saldo total en mora y nº de deudores, (2) desglose por campaña, (3) top 3 regiones por saldo,
+(4) tasa de cobertura (provisión/capital), (5) los 5 deudores de mayor saldo y (6) 3 alertas accionables.
+Cifras en millones de COP y preséntalo con títulos y viñetas.
+```
+
+Genie la guarda en `/Workspace/Users/{tu-correo}/.assistant/skills/` y la invocas igual con `/briefing-cartera-semanal`.
+
+> 💡 **Si tu workspace aún no tiene skills habilitadas**, no te detengas: pega el mismo texto del briefing como una
+> pregunta normal (sin la parte "Crea una skill llamada…", empezando por "Dame un briefing ejecutivo…") y Genie lo
+> genera al instante. Pierdes solo el poder invocarlo luego con `/`.
 
 **Editar una skill:**
 
