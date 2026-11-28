@@ -156,99 +156,65 @@ Ahora ordénalo de mayor a menor y agrega el número de deudores por campaña.
 
 ## 5. Preguntas de negocio sobre la cartera
 
-Base: `tbl_vreporteedadcartera`. Copia y pega uno por uno.
+Tres preguntas, cada una con gráfico y un insight de negocio. Copia una, mira la respuesta y conversa el hallazgo
+antes de pasar a la siguiente.
+
+**a) ¿Dónde está concentrado el riesgo? — por etapa de cobranza**
 
 ```text
-Dame un resumen de la cartera en mora: número de deudores, saldo total, capital y días de mora promedio.
+Muéstrame el saldo en mora por campaña (cobranza temprana, prejurídico, jurídico y castigada) en un gráfico de barras, con el porcentaje que representa cada etapa sobre el total de la cartera. Dime en qué etapa está concentrado el riesgo.
 ```
+
+> 💡 *Insight:* revela cuánto de la cartera ya escaló a etapas severas (jurídico/castigada) frente a la mora temprana,
+> que es la más recuperable.
+
+**b) ¿Qué regiones debemos priorizar? — concentración geográfica**
 
 ```text
-¿Cómo se reparte el saldo en mora por campaña? Muéstralo como tabla y como gráfico.
+¿Qué regiones concentran la cartera en mora? Muéstrame el saldo por región en un gráfico de barras ordenado de mayor a menor, e indícame qué porcentaje del total representan las 3 regiones más altas.
 ```
+
+> 💡 *Insight:* si pocas regiones concentran la mayoría del saldo, ahí deben ir los recursos de cobranza.
+
+**c) ¿Qué tan vieja y cubierta está la cartera? — altura de mora y provisión**
 
 ```text
-¿Cuál es el saldo en mora por región, de mayor a menor? ¿Qué región concentra más cartera?
+Muéstrame cómo se distribuye el saldo en mora por altura de mora (días de mora) en un gráfico, resáltame cuánto saldo está en mora de más de 180 días y dime qué porcentaje del capital tenemos cubierto con la provisión.
 ```
 
-```text
-Distribúyeme la cartera por tramo de mora (subcampaña) con saldo y número de deudores.
-```
-
-```text
-¿Cuánta provisión tenemos constituida y qué porcentaje del capital representa (tasa de cobertura)?
-```
-
-```text
-Muéstrame los 10 deudores con mayor saldo en mora, con su región, campaña y días de mora.
-```
-
-```text
-¿Cuántos deudores tienen productos de consumo, comercial e hipotecario?
-```
-
-**Reto libre** — que cada quien pregunte lo suyo. Ejemplos para destrabar:
-
-```text
-¿Qué estrategia de cobro se está aplicando a los deudores de más de 180 días de mora?
-```
-
-```text
-Compara el saldo en mora de la regional Valle contra Bogotá y dime la diferencia en porcentaje.
-```
-
-```text
-¿Cuántos clientes están castigados y cuánto capital representan?
-```
-
-> 💡 Si una respuesta no cuadra, abre la **citación** y revisa el SQL; suele ser la formulación. Reformula agregando la
-> métrica exacta (p. ej. *"usa el campo SALDO en COP"*).
+> 💡 *Insight:* une antigüedad de la deuda y cobertura; alta mora vieja con baja provisión es una señal de alerta.
 
 ---
 
 ## 6. Gestiones, contactabilidad y promesas de pago
 
-Tablas: `tbl_vreportegestiones`, `tbl_vreportepromesas`.
+Tres preguntas que cuentan la historia de la operación: cuánto trabajamos, cuánto recuperamos y quién lo hace mejor.
+
+**a) ¿Estamos contactando a la gente? — productividad y contactabilidad**
 
 ```text
-¿Cuántas gestiones de cobranza se registraron en los últimos 90 días y cómo se reparten por canal (voz, digital, campo)?
+Muéstrame las gestiones de cobranza de los últimos 90 días repartidas por canal (voz, digital, campo) en un gráfico, y dime qué porcentaje del total logró contacto efectivo con el titular.
 ```
+
+> 💡 *Insight:* mide el esfuerzo (volumen por canal) contra el resultado (contacto efectivo). Una contactabilidad baja
+> explica buena parte de la mora.
+
+**b) ¿Cuánto estamos recuperando? — promesas de pago**
 
 ```text
-¿Cuál es la tasa de contacto efectivo? Es decir, qué porcentaje de las gestiones logró contacto con el TITULAR frente a tercero o sin contacto.
+Muéstrame las promesas de pago por estado (cumplida, incumplida, parcial, vigente) en un gráfico, con el valor prometido en cada estado, y dime la tasa de cumplimiento y qué porcentaje del valor prometido ya se cumplió.
 ```
+
+> 💡 *Insight:* la tasa de cumplimiento y el valor efectivamente recuperado son el mejor termómetro de la gestión.
+
+**c) ¿Quién cobra mejor? — efectividad por equipo**
 
 ```text
-¿Cuáles son los principales motivos de no pago que reportan los deudores? Ordénalos de mayor a menor.
+¿Qué grupo de cobranza (call center interno, outsourcing, abogados externos) tiene mejor tasa de cumplimiento de promesas? Muéstralo en un gráfico de barras ordenado de mayor a menor.
 ```
 
-```text
-¿Cuántas promesas de pago hay y cuál es la tasa de cumplimiento por estado (cumplida, incumplida, parcial, vigente)? Incluye el valor prometido en cada estado.
-```
-
-```text
-Del total prometido, ¿qué porcentaje corresponde a promesas ya cumplidas?
-```
-
-```text
-Dame el top 10 de asesores por número de promesas cumplidas, con su tasa de cumplimiento. Solo asesores con 5 o más promesas.
-```
-
-```text
-¿Qué grupo de cobranza (call center interno, outsourcing, abogados externos) tiene mejor tasa de cumplimiento de promesas?
-```
-
-> 💡 La última pregunta cruza **promesas** con **cartera** por la cédula. Si Genie falla el cruce, recuérdale:
-> *"cruza por la cédula convirtiendo ambos campos a número"*.
-
-También puedes mirar el cobro jurídico:
-
-```text
-¿Cuántos procesos jurídicos hay y cómo se distribuyen por etapa procesal? Incluye el capital en cada etapa.
-```
-
-```text
-¿Cuál es el capital en cobro jurídico por región y cuántos procesos lleva cada abogado?
-```
+> 💡 *Insight:* compara el desempeño de los equipos internos frente a los externos para decidir dónde reforzar.
+> Si Genie necesita ayuda con el cruce, pídele *"cruza por la cédula convirtiendo ambos campos a número"*.
 
 ---
 
