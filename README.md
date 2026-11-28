@@ -7,7 +7,7 @@ El recorrido es el siguiente:
 
 1. El facilitador crea una sola vez un **Genie Agent** sobre las tablas de cobranza (sección 3).
 2. A partir de ahí, cada participante va **bajando por esta página** y copiando/pegando los prompts tal cual: primero
-   preguntas de negocio sobre la cartera, gestiones y promesas; luego memoria, *skills*, documentos, presentaciones,
+   preguntas de negocio sobre la cartera, gestiones y promesas; luego memoria, *skills*, artefactos, presentaciones,
    tareas programadas y conectores.
 
 > 📊 **Datos reales, mismo esquema.** Este workshop se corre sobre **tus propias tablas** de cobranza (las mismas que
@@ -125,7 +125,7 @@ Abre Genie One y haz clic en **New chat** (o usa el modo **Ask**). El compute es
 
 > ⚠️ **Importante — dónde escribir.** Todo el workshop (secciones 4 a 11) se hace en el chat de **Genie One**
 > (**New chat / Ask**), **no** dentro del room del Genie Agent "Cobranza". Genie One usa el Agent **por detrás** para
-> responder tus preguntas de datos, pero las funciones de skills, memoria, documentos, presentaciones y tareas
+> responder tus preguntas de datos, pero las funciones de skills, memoria, artefactos, presentaciones y tareas
 > programadas viven en Genie One. Si escribes dentro del room del Agent, esas funciones no estarán disponibles.
 
 Copia este primer prompt:
@@ -316,20 +316,24 @@ habilita un admin; ver la [doc de Skills](https://docs.databricks.com/aws/en/gen
 
 ---
 
-## 9. Documentos y presentaciones
+## 9. Artefactos: resumen ejecutivo y presentación
 
-📄 [Documentos](https://docs.databricks.com/aws/en/genie-one/documents) · [Artifacts](https://docs.databricks.com/aws/en/genie-one/artifacts).
+📄 [Artifacts](https://docs.databricks.com/aws/en/genie-one/artifacts).
 
-**Redactar un documento ejecutivo** — después de analizar la cartera:
+Un **artefacto** es una página visual que Genie arma con tus datos. Aquí creas dos cosas distintas: primero un
+artefacto con el **resumen ejecutivo** y luego una **presentación** (deck de láminas).
+
+> ⚠️ Artifacts está en **Beta**: un admin del workspace debe activarlo en **Previews**.
+
+**a) Crear un artefacto con el resumen ejecutivo** — después de analizar la cartera:
 
 ```text
-Redacta un documento de una página con el resumen ejecutivo de la cartera de este corte: situación general, riesgo por región, cobertura de provisión y 3 recomendaciones. Que sea claro para el comité directivo.
+Crea un artefacto de una página con el resumen ejecutivo del estado de la cartera de este corte: situación general, riesgo por región, cobertura de provisión y 3 recomendaciones accionables. Audiencia: comité directivo.
 ```
 
-Se abre en un panel editable, con citaciones, historial de versiones y comentarios. Compártelo con **Share** (quien edite
-necesita *CAN EDIT*).
+Ábrelo desde el hilo. Puedes editarlo (modos **View / Edit / Data**) y usar **Ask Genie** sobre cualquier gráfico o número.
 
-**Crear una presentación (artifact)** — *(Beta; un admin debe activar Artifacts en Previews)*:
+**b) Crear una presentación (slides)** — ya es algo diferente, un deck de láminas:
 
 ```text
 Crea una presentación de 3 láminas sobre el estado de la cobranza: (1) foto de cartera por campaña, (2) contactabilidad y cumplimiento de promesas, (3) estado del cobro jurídico. Audiencia: comité directivo.
@@ -402,7 +406,7 @@ Guarda este análisis de cobranza como un agente para poder reutilizarlo. Que in
 ```
 
 **Cierre — lo que cada participante se lleva:** preguntar y verificar con citaciones; analizar cartera, gestiones,
-promesas y jurídico sin SQL; *skills* para estandarizar reportes; documentos y presentaciones para comité; tareas
+promesas y jurídico sin SQL; *skills* para estandarizar reportes; artefactos y presentaciones para comité; tareas
 automáticas por correo; y conectores para actuar en Slack/correo.
 
 **Tarea para después:** (1) crea tu propia skill para el reporte que más repites, (2) prográmalo para que te llegue cada
