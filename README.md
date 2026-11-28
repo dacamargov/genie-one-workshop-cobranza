@@ -63,10 +63,11 @@ Genie One primero busca un **Genie Agent** relevante y, si lo encuentra, lo usa 
 
 1. En la barra lateral abre **Genie** y crea un nuevo agente (**New**).
 2. Aparece la pantalla **"What should your Genie Agent do?"** con dos opciones: describirlo en lenguaje natural o
-   **seleccionar las tablas manualmente**. Para este ejercicio elige **seleccionar las tablas manualmente**
-   (es más directo y predecible que describirlo en lenguaje natural). Nombra el agente **`Cobranza`**.
-3. Como fuentes, selecciona tus 4 tablas de reportes (y opcionalmente `cliente` y `obligaciones_cobis` para la vista
-   360), usando tu catálogo y esquema reales:
+   **seleccionar las tablas manualmente**. Ambas funcionan; para este ejercicio lo haremos **seleccionando las tablas
+   manualmente**, pero también puedes crearlo describiendo las tablas en lenguaje natural. Nombra el agente **`Cobranza`**.
+3. Al seleccionar las tablas, primero **busca el catálogo y el esquema donde están tus tablas** y ábrelos; allí
+   selecciona tus 4 tablas de reportes (y opcionalmente `cliente` y `obligaciones_cobis` para la vista 360). Con tu
+   catálogo y esquema reales, las tablas son:
 
 ```text
 <catalogo>.<esquema>.tbl_vreporteedadcartera
